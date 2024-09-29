@@ -1,0 +1,30 @@
+{
+  "name": "provider",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon --watch 'src/**/*.ts' --exec ts-node src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "fastify": "4.17.0",
+    "@fastify/cors": "8.2.1",
+    "@fastify/swagger": "8.3.1",
+    "@fastify/swagger-ui": "1.8.1",
+    "axios": "^1.7.7",
+    "uuid": "^10.0.0"
+  },
+  "devDependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/node": "^22.7.4",
+    "@types/uuid": "^10.0.0",
+    "nodemon": "^3.1.7",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.2"
+  }
+}
