@@ -1,24 +1,21 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Prisma } from '@prisma/client';
 
 export const webhookService = {
   async updateEventStatus(prisma: PrismaClient, id: string, status: string) {
-    return await prisma.$transaction(async (tx) => {
-      // Сначала проверяем, существует ли событие
-      const event = await tx.event.findUnique({
-        where: { id }
-      });
+    const event = await prisma.event.findUnique({
+      where: { id }
+    });
 
-      if (!event) {
-        throw new Error(`Event with id ${id} not found`);
-      }
+    if (!event) {
+      throw new Error('Event not found');
+    }
 
-      // Если событие существует, обновляем его статус
+    await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
       await tx.event.update({
         where: { id },
         data: { status }
       });
 
-      // Обновляем статусы ставок
       if (status === 'first_team_won') {
         await tx.bet.updateMany({
           where: { eventId: id },
@@ -30,8 +27,6 @@ export const webhookService = {
           data: { status: 'lost' }
         });
       }
-
-      return { message: 'Event status updated successfully' };
     });
   }
 };

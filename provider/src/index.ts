@@ -8,7 +8,6 @@ const fastify = Fastify({ logger: true });
 
 const start = async () => {
   try {
-    // Регистрация Swagger
     await fastify.register(swagger, {
       openapi: {
         info: {
@@ -18,7 +17,7 @@ const start = async () => {
         },
         servers: [
           {
-            url: 'http://localhost:3000',
+            url: 'http://provider:3000',
           },
         ],
         tags: [
@@ -27,7 +26,6 @@ const start = async () => {
       }
     });
 
-    // Регистрация Swagger UI
     await fastify.register(swaggerUi, {
       routePrefix: '/documentation',
       uiConfig: {
@@ -36,18 +34,15 @@ const start = async () => {
       },
     });
 
-    // Регистрация CORS
     await fastify.register(cors, {
       origin: "*",
     });
 
-    // Регистрация маршрутов
     await fastify.register(eventRoutes);
 
-    // Запуск сервера
-    await fastify.listen({ port: 3000 });
-    console.log("Provider service is running on http://localhost:3000");
-    console.log("Swagger documentation is available at http://localhost:3000/documentation");
+    await fastify.listen({ port: 3000, host: '0.0.0.0' });
+    console.log("Provider service is running on http://0.0.0.0:3000");
+    console.log("Swagger documentation is available at http://0.0.0.0:3000/documentation");
   } catch (err) {
     fastify.log.error(err);
     process.exit(1);

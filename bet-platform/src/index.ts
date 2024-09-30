@@ -55,8 +55,8 @@ const start = async () => {
     // Запускаем первичную синхронизацию
     await syncEvents(prisma);
 
-    // Запускаем периодическую синхронизацию каждые 5 минут
-    setInterval(() => syncEvents(prisma), 1 * 60 * 1000);
+    // Запускаем периодическую синхронизацию каждые 6 секунд
+    setInterval(() => syncEvents(prisma), 0.1 * 60 * 1000);
 
     await fastify.listen({ port: config.port, host: config.host });
     console.log(`Bet-platform service is running on ${config.baseUrl}`);

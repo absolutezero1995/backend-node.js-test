@@ -134,7 +134,6 @@ export async function eventRoutes(fastify: FastifyInstance) {
 
     events[eventIndex].status = status;
 
-    // Уведомление bet-platform об изменении статуса события
     try {
       await axios.post("http://localhost:4000/webhook/events", {
         id: events[eventIndex].id,

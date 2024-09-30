@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  provider:
+    build: ./provider
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    # Уберите монтирование тома
+    # volumes:
+    #   - ./provider:/app
+
+  bet-platform:
+    build: ./bet-platform
+    ports:
+      - "4000:4000"
+    environment:
+      - NODE_ENV=production
+      - PROVIDER_URL=http://provider:3000
+      - DATABASE_URL=postgresql://absolutezero1995:123123@db:5432/betdb
+    # Уберите монтирование тома
+    # volumes:
+    #   - ./bet-platform:/app
+    depends_on:
+      - provider
+      - db
+
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: absolutezero1995
+      POSTGRES_PASSWORD: 123123
+      POSTGRES_DB: betdb
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

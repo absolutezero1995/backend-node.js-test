@@ -1,5 +1,13 @@
 import { PrismaClient } from '@prisma/client';
 
+interface BetData {
+  id: string;
+  eventId: string;
+  amount: number;
+  potentialWin: number;
+  status: string;
+}
+
 export const betService = {
   async createBet(prisma: PrismaClient, eventId: string, amount: number) {
     const event = await prisma.event.findUnique({
@@ -47,7 +55,7 @@ export const betService = {
       }
     });
 
-    return bets.map(bet => ({
+    return bets.map((bet: BetData) => ({
       betId: bet.id,
       eventId: bet.eventId,
       amount: bet.amount,
